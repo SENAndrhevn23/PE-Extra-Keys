@@ -30,7 +30,7 @@ on:
 
 env:
   HAXE_VERSION: 4.3.6
-  PROJECT_NAME: A-Slice
+  PROJECT_NAME: PsychEngine
 
 jobs:
   build:
@@ -56,12 +56,20 @@ jobs:
         uses: actions/cache@v3
         with:
           key: ${{ inputs.cacheLibrariesPath }}
-          fail-on-cache-miss: true
+          fail-on-cache-miss: false
           enableCrossOsArchive: true
           path: |
             .haxelib/
           restore-keys: |
             ${{ inputs.cacheLibrariesPath }}
+
+      - name: Install Haxelibs (Psych Engine Setup)
+        run: |
+          haxelib setup .haxelib
+          haxelib install lime --quiet
+          haxelib install openfl --quiet
+          haxelib install flixel --quiet
+          haxelib run lime setup -y
 
       - name: Restore existing build cache for faster compilation
         id: load-cache
@@ -74,19 +82,22 @@ jobs:
           restore-keys: |
             cache-build-${{ inputs.exportPath }}
 
-      - name: Install libVLC
+      - name: Install Dependencies (Linux/VLC)
         if: inputs.exportPath == 'linux'
-        run: sudo apt install -y libvlc-dev libvlccore-dev
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libvlc-dev libvlccore-dev libgl1-mesa-dev libglu1-mesa-dev
 
       - name: Configure Android
         if: inputs.exportPath == 'android'
         run: |
           haxelib run lime config ANDROID_SDK "$ANDROID_HOME"
+          haxeversion=$(haxelibancouver)
           haxelib run lime config ANDROID_NDK_ROOT "$ANDROID_NDK_LATEST_HOME"
           haxelib run lime config JAVA_HOME "$JAVA_HOME"
           haxelib run lime config ANDROID_SETUP true
 
-      - name: Compile
+      - name: Compile Psych Engine
         run: haxelib run lime build ${{ inputs.buildArgs }}
 
       - name: Make IPA
