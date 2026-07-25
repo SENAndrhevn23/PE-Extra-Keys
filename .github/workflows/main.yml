@@ -1,173 +1,60 @@
-# This is a basic workflow to help you get started with Actions
+name: Build All Platforms
 
-name: Build
-
-# Controls when the action will run.
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ main, experimental ]
+    branches: [ main, master ]
   pull_request:
-    branches: [ main, experimental ]
+    branches: [ main, master ]
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  buildLinux:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+  build:
+    name: ${{ matrix.platform.name }}
+    runs-on: ${{ matrix.platform.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - { name: 'Windows', os: 'windows-latest', target: 'windows' }
+          - { name: 'macOS', os: 'macos-latest', target: 'mac' }
+          - { name: 'Linux', os: 'ubuntu-latest', target: 'linux' }
+          - { name: 'iOS', os: 'macos-latest', target: 'ios' }
+          - { name: 'Android', os: 'ubuntu-latest', target: 'android' }
+          - { name: 'HTML5', os: 'ubuntu-latest', target: 'html5' }
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4.1.7
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-      - uses: krdlab/setup-haxe@master
+      - name: Setup Haxe
+        uses: krdlab/setup-haxe@v1
         with:
-          haxe-version: 4.3.4
-      # Runs a set of commands using the runners shell
-      - name: Install Haxelib
+          haxe-version: 4.2.5
+
+      - name: Configure Haxelib & Install Dependencies
         run: |
-          sudo apt-get install libvlc-dev
-          sudo apt-get install libvlccore-dev
+          mkdir -p ~/haxelib
           haxelib setup ~/haxelib
-          haxelib install hxcpp > /dev/null --quiet
-          chmod +x ./setup/unix.sh
-          sh ./setup/unix.sh
-      - name: Skip SScript setup mode
-        run: echo 'oy9:showMacroty8:loopCosti25y10:includeAllfg' >> ~/settings.cocoa
-      - name: Create Version Tag
-        run: echo "${{github.run_id}}" > VERSION
-      - name: Compile
-        run: haxelib run lime build Project.xml linux --app-version="4.0.0-${{ github.run_id}}" -D officialBuild
-      - name: Publish Artifact
-        uses: actions/upload-artifact@v4.3.4
-        with:
-          name: linuxBuild
-          path: 'export/release/linux/bin'
+          haxelib install lime
+          haxelib install openfl
+          # Add any other required libraries here, e.g.: haxelib install flixel
 
-  buildWindows:
-    runs-on: windows-latest
-
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4.1.7
-
-      - uses: krdlab/setup-haxe@master
-        with:
-          haxe-version: 4.3.4
-      # Runs a set of commands using the runners shell
-      - name: Install Haxelib
-        run: |
-          haxelib setup C:/haxelib
-          haxelib install hxcpp > /dev/null --quiet
-          .\"setup/windows.bat"
-        shell: cmd
-      - name: Skip SScript setup mode
-        run: echo 'oy9:showMacroty8:loopCosti25y10:includeAllfg' >> %USERPROFILE%/settings.cocoa
-        shell: cmd
-      - name: Create Version Tag
-        run: echo "${{github.run_id}}" > VERSION
-      - name: Compile
-        run: haxelib run lime build windows --app-version="4.0.0-${{ github.run_id}}"  -D officialBuild
-      - name: Publish Artifact
-        uses: actions/upload-artifact@v4.3.4
-        with:
-          name: windowsBuild
-          path: export/release/windows/bin
-
-  buildMac:
-    runs-on: macos-15
-
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4.1.7
-
-      - uses: krdlab/setup-haxe@master
-        with:
-          haxe-version: 4.3.4
-      # Runs a set of commands using the runners shell
-      - name: Install Haxelilb Cache / Speedup
-        run: |
-          echo "HF_CPP_INCREMENTAL_BUILD=1" >> $GITHUB_ENV
-      - name: Install Haxelib
-        run: |
-          haxelib setup ~/haxelib
-          haxelib install hxcpp > /dev/null --quiet
-          chmod +x ./setup/unix.sh
-          sh ./setup/unix.sh
-      - name: Skip SScript setup mode
-        run: echo 'oy9:showMacroty8:loopCosti25y10:includeAllfg' >> ~/settings.cocoa
-      - name: Create Version Tag
-        run: echo "${{github.run_id}}" > VERSION
-      - name: Compile
-        run: haxelib run lime build mac --app-version="4.0.0-${{ github.run_id}}" -D officialBuild -D HXCPP_COMPILE_THREADS=$(sysctl -n hw.ncpu)
-      - name: Publish Artifact
-        uses: actions/upload-artifact@v4.3.4
-        with:
-          name: macBuild
-          path: export/release/macos/bin
-
-  buildIOS:
-    runs-on: macos-15
-
-    steps:
-      - uses: actions/checkout@v4.1.7
-
-      - uses: krdlab/setup-haxe@master
-        with:
-          haxe-version: 4.3.4
-      - name: Install Haxelib
-        run: |
-          haxelib setup ~/haxelib
-          haxelib install hxcpp > /dev/null --quiet
-          chmod +x ./setup/unix.sh
-          sh ./setup/unix.sh
-      - name: Skip SScript setup mode
-        run: echo 'oy9:showMacroty8:loopCosti25y10:includeAllfg' >> ~/settings.cocoa
-      - name: Create Version Tag
-        run: echo "${{github.run_id}}" > VERSION
-      - name: Compile iOS
-        run: haxelib run lime build ios --app-version="4.0.0-${{ github.run_id}}" -D officialBuild -D HXCPP_COMPILE_THREADS=$(sysctl -n hw.ncpu)
-      - name: Publish Artifact
-        uses: actions/upload-artifact@v4.3.4
-        with:
-          name: iosBuild
-          path: export/release/ios/bin
-
-  buildAndroid:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4.1.7
-
-      - uses: krdlab/setup-haxe@master
-        with:
-          haxe-version: 4.3.4
-      - name: Setup Java JDK
+      - name: Setup Java (Android Only)
+        if: matrix.platform.target == 'android'
         uses: actions/setup-java@v4
         with:
           distribution: 'adopt'
           java-version: '17'
-      - name: Install Haxelib
+
+      - name: Setup Android SDK (Android Only)
+        if: matrix.platform.target == 'android'
+        uses: android-actions/setup-android@v3
+
+      - name: Install Linux Dependencies (Linux HTML5/Native Only)
+        if: matrix.platform.os == 'ubuntu-latest' && matrix.platform.target != 'android'
         run: |
-          haxelib setup ~/haxelib
-          haxelib install hxcpp > /dev/null --quiet
-          haxelib install lime
-          haxelib install openfl
-          chmod +x ./setup/unix.sh
-          sh ./setup/unix.sh
-      - name: Skip SScript setup mode
-        run: echo 'oy9:showMacroty8:loopCosti25y10:includeAllfg' >> ~/settings.cocoa
-      - name: Create Version Tag
-        run: echo "${{github.run_id}}" > VERSION
-      - name: Compile Android
-        run: haxelib run lime build android --app-version="4.0.0-${{ github.run_id}}" -D officialBuild
-      - name: Publish Artifact
-        uses: actions/upload-artifact@v4.3.4
-        with:
-          name: androidBuild
-          path: export/release/android/bin
+          sudo apt-get update
+          sudo apt-get install -y libgl1-mesa-dev libglu1-mesa-dev
+
+      - name: Build Target
+        run: |
+          haxelib run lime build ${{ matrix.platform.target }} --app-version="4.0.0-30173053314" -D officialBuild -D HXCPP_COMPILE_THREADS=4
