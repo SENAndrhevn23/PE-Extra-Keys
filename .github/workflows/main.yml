@@ -1,3 +1,124 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+      - experimental
+  pull_request:
+    branches:
+      - main
+      - experimental
+  workflow_dispatch:
+
+jobs:
+  buildLinux:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4.1.7
+
+      - uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: 4.3.4
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libvlc-dev libvlccore-dev
+
+      - name: Install Haxelib
+        run: |
+          haxelib setup ~/haxelib
+          haxelib install hxcpp --quiet
+          chmod +x ./setup/unix.sh
+          ./setup/unix.sh
+
+      - name: Skip SScript setup mode
+        run: echo 'oy9:showMacroty8:loopCosti25y10:includeAllfg' >> ~/settings.cocoa
+
+      - name: Create Version Tag
+        run: echo "${{ github.run_id }}" > VERSION
+
+      - name: Compile
+        run: |
+          haxelib run lime build Project.xml linux \
+            --app-version="4.0.0-${{ github.run_id }}" \
+            -D officialBuild
+
+      - uses: actions/upload-artifact@v4.3.4
+        with:
+          name: linuxBuild
+          path: export/release/linux/bin
+
+  buildWindows:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4.1.7
+
+      - uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: 4.3.4
+
+      - name: Install Haxelib
+        shell: cmd
+        run: |
+          haxelib setup C:\haxelib
+          haxelib install hxcpp --quiet
+          call setup\windows.bat
+
+      - name: Skip SScript setup mode
+        shell: cmd
+        run: echo oy9:showMacroty8:loopCosti25y10:includeAllfg>>%USERPROFILE%\settings.cocoa
+
+      - name: Create Version Tag
+        shell: cmd
+        run: echo ${{ github.run_id }} > VERSION
+
+      - name: Compile
+        shell: cmd
+        run: haxelib run lime build windows --app-version="4.0.0-${{ github.run_id }}" -D officialBuild
+
+      - uses: actions/upload-artifact@v4.3.4
+        with:
+          name: windowsBuild
+          path: export/release/windows/bin
+
+  buildMac:
+    runs-on: macos-15
+
+    steps:
+      - uses: actions/checkout@v4.1.7
+
+      - uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: 4.3.4
+
+      - name: Install Haxelib
+        run: |
+          haxelib setup ~/haxelib
+          haxelib install hxcpp --quiet
+          chmod +x ./setup/unix.sh
+          ./setup/unix.sh
+
+      - name: Skip SScript setup mode
+        run: echo 'oy9:showMacroty8:loopCosti25y10:includeAllfg' >> ~/settings.cocoa
+
+      - name: Create Version Tag
+        run: echo "${{ github.run_id }}" > VERSION
+
+      - name: Compile
+        run: |
+          haxelib run lime build mac \
+            --app-version="4.0.0-${{ github.run_id }}" \
+            -D officialBuild
+
+      - uses: actions/upload-artifact@v4.3.4
+        with:
+          name: macBuild
+          path: export/release/macos/bin
+
   buildAndroid:
     runs-on: ubuntu-latest
 
@@ -8,15 +129,18 @@
         with:
           haxe-version: 4.3.4
 
-      - name: Install Java & Android SDK
-        uses: android-actions/setup-android@v3
+      - uses: android-actions/setup-android@v3
 
       - name: Install Haxelib
         run: |
           haxelib setup ~/haxelib
           haxelib install hxcpp --quiet
           chmod +x ./setup/unix.sh
-          sh ./setup/unix.sh
+          ./setup/unix.sh
+
+      - name: Android Setup
+        run: |
+          haxelib run lime setup android
 
       - name: Skip SScript setup mode
         run: echo 'oy9:showMacroty8:loopCosti25y10:includeAllfg' >> ~/settings.cocoa
@@ -30,8 +154,45 @@
             --app-version="4.0.0-${{ github.run_id }}" \
             -D officialBuild
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v4.3.4
+      - uses: actions/upload-artifact@v4.3.4
         with:
           name: androidBuild
           path: export/release/android/bin
+
+  buildIOS:
+    runs-on: macos-15
+
+    steps:
+      - uses: actions/checkout@v4.1.7
+
+      - uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: 4.3.4
+
+      - name: Install Haxelib
+        run: |
+          haxelib setup ~/haxelib
+          haxelib install hxcpp --quiet
+          chmod +x ./setup/unix.sh
+          ./setup/unix.sh
+
+      - name: iOS Setup
+        run: |
+          haxelib run lime setup ios
+
+      - name: Skip SScript setup mode
+        run: echo 'oy9:showMacroty8:loopCosti25y10:includeAllfg' >> ~/settings.cocoa
+
+      - name: Create Version Tag
+        run: echo "${{ github.run_id }}" > VERSION
+
+      - name: Compile
+        run: |
+          haxelib run lime build ios \
+            --app-version="4.0.0-${{ github.run_id }}" \
+            -D officialBuild
+
+      - uses: actions/upload-artifact@v4.3.4
+        with:
+          name: iosBuild
+          path: export/release/ios
