@@ -5,11 +5,14 @@ on:
     branches:
       - main
       - experimental
+
   pull_request:
     branches:
       - main
       - experimental
+
   workflow_dispatch:
+
 
 jobs:
 
@@ -32,12 +35,16 @@ jobs:
         run: |
           haxelib setup ~/haxelib
           haxelib install hxcpp --quiet
-          chmod +x setup/unix.sh
+          chmod +x ./setup/unix.sh
           ./setup/unix.sh
 
-      - name: Skip SScript setup
+      - name: Skip SScript setup mode
         run: |
           echo 'oy9:showMacroty8:loopCosti25y10:includeAllfg' >> ~/settings.cocoa
+
+      - name: Create Version
+        run: |
+          echo "${{ github.run_id }}" > VERSION
 
       - name: Build Linux
         run: |
@@ -45,10 +52,12 @@ jobs:
           --app-version="4.0.0-${{ github.run_id }}" \
           -D officialBuild
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload Linux
+        uses: actions/upload-artifact@v4.3.4
         with:
-          name: Linux
+          name: linuxBuild
           path: export/release/linux/bin
+
 
 
   buildWindows:
@@ -68,10 +77,15 @@ jobs:
           haxelib install hxcpp --quiet
           call setup\windows.bat
 
-      - name: Skip SScript setup
+      - name: Skip SScript setup mode
         shell: cmd
         run: |
           echo oy9:showMacroty8:loopCosti25y10:includeAllfg>>%USERPROFILE%\settings.cocoa
+
+      - name: Create Version
+        shell: cmd
+        run: |
+          echo ${{ github.run_id }} > VERSION
 
       - name: Build Windows
         shell: cmd
@@ -80,145 +94,8 @@ jobs:
           --app-version="4.0.0-${{ github.run_id }}" ^
           -D officialBuild
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload Windows
+        uses: actions/upload-artifact@v4.3.4
         with:
-          name: Windows
+          name: windowsBuild
           path: export/release/windows/bin
-
-
-  buildMac:
-    runs-on: macos-15
-
-    steps:
-      - uses: actions/checkout@v4.1.7
-
-      - uses: krdlab/setup-haxe@master
-        with:
-          haxe-version: 4.3.4
-
-      - name: Setup Haxelib
-        run: |
-          haxelib setup ~/haxelib
-          haxelib install hxcpp --quiet
-          chmod +x setup/unix.sh
-          ./setup/unix.sh
-
-      - name: Skip SScript setup
-        run: |
-          echo 'oy9:showMacroty8:loopCosti25y10:includeAllfg' >> ~/settings.cocoa
-
-      - name: Build Mac
-        run: |
-          haxelib run lime build Project.xml mac \
-          --app-version="4.0.0-${{ github.run_id }}" \
-          -D officialBuild
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: Mac
-          path: export/release/macos/bin
-
-
-  buildAndroid:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4.1.7
-
-
-      - uses: krdlab/setup-haxe@master
-        with:
-          haxe-version: 4.3.4
-
-
-      - name: Setup Android
-        uses: android-actions/setup-android@v3
-
-
-      - name: Install Android SDK
-        run: |
-          sdkmanager "platform-tools"
-          sdkmanager "platforms;android-35"
-          sdkmanager "build-tools;35.0.0"
-          sdkmanager "ndk;26.3.11579264"
-
-          echo "ANDROID_HOME=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
-          echo "ANDROID_SDK=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
-          echo "ANDROID_NDK_ROOT=$ANDROID_SDK_ROOT/ndk/26.3.11579264" >> $GITHUB_ENV
-
-
-      - name: Setup Haxelib
-        run: |
-          haxelib setup ~/haxelib
-          haxelib install hxcpp --quiet
-          chmod +x setup/unix.sh
-          ./setup/unix.sh
-
-
-      - name: Lime Android Setup
-        run: |
-          haxelib run lime setup android
-
-
-      - name: Skip SScript setup
-        run: |
-          echo 'oy9:showMacroty8:loopCosti25y10:includeAllfg' >> ~/settings.cocoa
-
-
-      - name: Build Android
-        run: |
-          haxelib run lime build Project.xml android \
-          --app-version="4.0.0-${{ github.run_id }}" \
-          -D officialBuild
-
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: Android
-          path: export/release/android/bin
-
-
-
-  buildIOS:
-    runs-on: macos-15
-
-
-    steps:
-      - uses: actions/checkout@v4.1.7
-
-
-      - uses: krdlab/setup-haxe@master
-        with:
-          haxe-version: 4.3.4
-
-
-      - name: Setup Haxelib
-        run: |
-          haxelib setup ~/haxelib
-          haxelib install hxcpp --quiet
-          chmod +x setup/unix.sh
-          ./setup/unix.sh
-
-
-      - name: Lime iOS Setup
-        run: |
-          haxelib run lime setup ios
-
-
-      - name: Skip SScript setup
-        run: |
-          echo 'oy9:showMacroty8:loopCosti25y10:includeAllfg' >> ~/settings.cocoa
-
-
-      - name: Build iOS (Unsigned)
-        run: |
-          haxelib run lime build Project.xml ios \
-          --app-version="4.0.0-${{ github.run_id }}" \
-          -D officialBuild \
-          -nosign
-
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: iOS
-          path: export/release/ios
