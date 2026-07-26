@@ -15,3 +15,7 @@ Thanks for the support!
 * **Extra keys design by:** srPerez (original)
 * **Extra keys port by:** Andre Nicholas Jr (coder)
 * **Extra Keys Base By:** Magman! (goat)
+
+## Notice:
+
+* Use lastest action and download the windows and linux once you click on an action so you dont need to wait for an new build release
