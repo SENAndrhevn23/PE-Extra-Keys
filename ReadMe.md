@@ -19,3 +19,7 @@ Thanks for the support!
 ## Notice:
 
 * Use lastest action and download the windows and linux once you click on an action so you dont need to wait for an new build release
+
+## Testing Place:
+
+* a testing place to add features if its ready for the basegame https://github.com/SENAndrhevn23/PE-Extra-Keys-TP
