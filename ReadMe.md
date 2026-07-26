@@ -1,6 +1,6 @@
 # Welcome to extra keys for psych 1.0.4
 
-This is the first ever port for psych 1.0+ yall been wanting for years. This is a solo dev making its own features.
+This is the first ever port for psych 1.0+ yall been wanting for months. This is a solo dev making its own features.
 
 You can add 1-9 keys, but 18k support is coming later, or even 26 keys.
 
