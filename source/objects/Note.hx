@@ -95,17 +95,17 @@ class Note extends FlxSprite
 
 	public static var SUSTAIN_SIZE:Int = 44;
 	public static var swagWidth:Float = 160 * 0.7;
-	public static var colArray:Array<String> = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
-	public static var colArrayAlt:Array<String> = ['purple', 'blue', 'green', 'red', 'white', 'yellow', 'violet', 'black', 'dark'];
-	public static var pressArrayAlt:Array<String> = ['left', 'down', 'up', 'right', 'white', 'yellow', 'violet', 'black', 'dark'];
+	public static var colArray:Array<String> = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+	public static var colArrayAlt:Array<String> = ['purple', 'blue', 'green', 'red', 'white', 'yellow', 'violet', 'black', 'dark', 'pink', 'orange', 'cyan', 'magenta', 'lime', 'indigo', 'maroon', 'navy', 'teal', 'coral', 'gold', 'silver', 'crimson', 'olive', 'turquoise', 'plum', 'sienna'];
+	public static var pressArrayAlt:Array<String> = ['left', 'down', 'up', 'right', 'white', 'yellow', 'violet', 'black', 'dark', 'left', 'down', 'up', 'right', 'white', 'yellow', 'violet', 'black', 'dark', 'left', 'down', 'up', 'right', 'white', 'yellow', 'violet', 'black'];
 	public static var defaultNoteSkin(default, never):String = 'noteSkins/NOTE_assets';
 
-	public static var scales:Array<Float> = [0.7, 0.7, 0.7, 0.7, 0.65, 0.6, 0.55, 0.5, 0.46];
-	public static var scalesPixel:Array<Float> = [1, 1, 1, 1, 0.93, 0.86, 0.79, 0.71, 0.66];
-	public static var splashOffsetScale:Array<Float> = [1, 1, 1, 1, 1.08, 1.17, 1.27, 1.4, 1.52];
-	public static var swidths:Array<Float> = [112, 112, 112, 112, 98, 84, 77, 70, 63];
-	public static var posRest:Array<Int> = [-168, -112, -56, 0, 15, 35, 45, 55, 60];
-	public static var midArray:Array<Int> = [0, 0, 1, 1, 2, 2, 3, 3, 4];
+	public static var scales:Array<Float> = [0.7, 0.7, 0.7, 0.7, 0.65, 0.6, 0.55, 0.5, 0.46, 0.42, 0.38, 0.35, 0.32, 0.30, 0.28, 0.26, 0.24, 0.22, 0.21, 0.20, 0.19, 0.18, 0.17, 0.16, 0.15, 0.14];
+	public static var scalesPixel:Array<Float> = [1, 1, 1, 1, 0.93, 0.86, 0.79, 0.71, 0.66, 0.61, 0.56, 0.52, 0.48, 0.44, 0.41, 0.38, 0.35, 0.33, 0.31, 0.29, 0.27, 0.25, 0.24, 0.23, 0.22, 0.21];
+	public static var splashOffsetScale:Array<Float> = [1, 1, 1, 1, 1.08, 1.17, 1.27, 1.4, 1.52, 1.64, 1.77, 1.91, 2.06, 2.22, 2.40, 2.59, 2.80, 3.02, 3.26, 3.52, 3.80, 4.10, 4.43, 4.78, 5.16, 5.57];
+	public static var swidths:Array<Float> = [112, 112, 112, 112, 98, 84, 77, 70, 63, 57, 52, 48, 44, 40, 37, 34, 32, 30, 28, 26, 25, 24, 23, 22, 21, 20];
+	public static var posRest:Array<Int> = [-168, -112, -56, 0, 15, 35, 45, 55, 60, 65, 70, 75, 78, 81, 84, 87, 90, 92, 94, 96, 98, 100, 102, 104, 106, 108];
+	public static var midArray:Array<Int> = [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12];
 	public static var gfxIndex:Array<Dynamic> = [
 		[4],
 		[0, 3],
@@ -115,7 +115,24 @@ class Note extends FlxSprite
 		[0, 2, 3, 5, 1, 8],
 		[0, 2, 3, 4, 5, 1, 8],
 		[0, 1, 2, 3, 5, 6, 7, 8],
-		[0, 1, 2, 3, 4, 5, 6, 7, 8]
+		[0, 1, 2, 3, 4, 5, 6, 7, 8],
+		[0, 1, 2, 3, 4, 5, 6, 7, 8, 0],
+		[0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1],
+		[0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2],
+		[0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3],
+		[0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3, 4],
+		[0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3, 4, 5],
+		[0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3, 4, 5, 6],
+		[0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3, 4, 5, 6, 7],
+		[0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3, 4, 5, 6, 7, 8],
+		[0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 0],
+		[0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1],
+		[0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2],
+		[0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3],
+		[0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3, 4],
+		[0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3, 4, 5],
+		[0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3, 4, 5, 6],
+		[0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3, 4, 5, 6, 7]
 	];
 	public static var gfxHud:Array<Dynamic> = [
 		[4],
@@ -126,7 +143,24 @@ class Note extends FlxSprite
 		[0, 2, 3, 0, 1, 3],
 		[0, 2, 3, 4, 0, 1, 3],
 		[0, 1, 2, 3, 0, 1, 2, 3],
-		[0, 1, 2, 3, 4, 0, 1, 2, 3]
+		[0, 1, 2, 3, 4, 0, 1, 2, 3],
+		[0, 1, 2, 3, 4, 0, 1, 2, 3, 4],
+		[0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0],
+		[0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1],
+		[0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2],
+		[0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+		[0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4],
+		[0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0],
+		[0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1],
+		[0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2],
+		[0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+		[0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4],
+		[0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0],
+		[0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1],
+		[0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2],
+		[0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3],
+		[0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4],
+		[0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0]
 	];
 	public static var gfxDir:Array<String> = ['LEFT', 'DOWN', 'UP', 'RIGHT', 'SPACE'];
 	public static var dataNum:Int;
@@ -289,6 +323,7 @@ class Note extends FlxSprite
 			texture = '';
 			rgbShader = new RGBShaderReference(this, initializeGlobalRGBShader(noteData));
 			if(PlayState.SONG != null && PlayState.SONG.disableNoteRGB) rgbShader.enabled = false;
+			if(ClientPrefs.data.disableNoteShaders) rgbShader.enabled = false;
 
 			if (Main.mania != 0) x += Note.swidths[Main.mania] * (noteData % (Main.mania+1));
 			if(!isSustainNote && noteData < Main.mania+1) { //Doing this 'if' check to fix the warnings on Senpai songs
@@ -396,8 +431,8 @@ class Note extends FlxSprite
 		var skinPixel:String = skin;
 		var lastScaleY:Float = scale.y;
 		var skinPostfix:String = getNoteSkinPostfix();
-		var customSkin:String = skin + skinPostfix;
 		var path:String = PlayState.isPixelStage ? 'pixelUI/' : '';
+		var customSkin:String = skin + skinPostfix;
 		if(customSkin == _lastValidChecked || Paths.fileExists('images/' + path + customSkin + '.png', IMAGE))
 		{
 			skin = customSkin;

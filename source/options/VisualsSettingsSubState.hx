@@ -17,11 +17,13 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 		rpcTitle = 'Visuals Settings Menu'; //for Discord Rich Presence
 
 		// for note skins and splash skins
+		var savedMania:Int = Main.mania;
+		Main.mania = 3;
 		notes = new FlxTypedGroup<StrumNote>();
 		splashes = new FlxTypedGroup<NoteSplash>();
-		for (i in 0...Note.colArray.length)
+		for (i in 0...4)
 		{
-			var note:StrumNote = new StrumNote(370 + (560 / Note.colArray.length) * i, -200, i, 0);
+			var note:StrumNote = new StrumNote(370 + (560 / 4) * i, -200, i, 0);
 			changeNoteSkin(note);
 			notes.add(note);
 			
@@ -32,6 +34,7 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 			splash.kill();
 			splashes.add(splash);
 		}
+		Main.mania = savedMania;
 
 		// options
 		var noteSkins:Array<String> = Mods.mergeAllTextsNamed('images/noteSkins/list.txt');

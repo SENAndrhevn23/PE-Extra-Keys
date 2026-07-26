@@ -39,6 +39,12 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 			BOOL);
 		addOption(option);
 
+		var option:Option = new Option('Disable Note Shaders',
+			"If checked, disables the RGB color shaders on notes.\nNotes will appear with their base texture colors instead.",
+			'disableNoteShaders',
+			BOOL);
+		addOption(option);
+
 		var option:Option = new Option('GPU Caching', //Name
 			"If checked, allows the GPU to be used for caching textures, decreasing RAM usage.\nDon't turn this on if you have a shitty Graphics Card.", //Description
 			'cacheOnGPU',
